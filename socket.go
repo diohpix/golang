@@ -27,7 +27,7 @@ func main() {
 
 
 	header := make([]byte, 10)
-	tcpAddr, err := net.ResolveTCPAddr("tcp4", "127.0.0.1")
+	tcpAddr, err := net.ResolveTCPAddr("tcp4", "it.yhsbearing.com:8193")
 	checkError(err);
 	conn, err := net.DialTCP("tcp", nil, tcpAddr)
 	conn.Write([]byte{  0xa0, 0xa0,  0xa0,  0xa0, 0x00, 0x01, 0x01, 0x01, 0x00, 0x02, 0x00,0x02 });
