@@ -20,11 +20,8 @@ func Init(){
 	fmt.Print("OK")
 }
 func Connect(conn *net.TCPConn ){
-	header := make([]byte, 10)
 	conn.Write(cnchandle);
-	conn.Read(header);
-	readBodyLen := binary.BigEndian.Uint16(header[8:]);
-	fmt.Println("header ",binary.BigEndian.Uint16(header[8:]));
+	readBodyLen :=readBodyLenth(conn);
 	tmp := make([]byte, readBodyLen)
 	conn.Read(tmp);
 }
@@ -36,12 +33,16 @@ func SysInfo(conn * net.TCPConn){
 		binary.Write(v,binary.BigEndian,byte(0))
 	}
 	conn.Write(v.Bytes());
-	header := make([]byte, 10)
-	conn.Read(header);
-	readBodyLen := binary.BigEndian.Uint16(header[8:]);
+	readBodyLen := readBodyLenth(conn);
 	tmp := make([]byte, readBodyLen)     // using small tmo buffer for demonstrating
 	n,_:=conn.Read(tmp);
 	fmt.Println("read", n,tmp[:n])
+}
+func readBodyLenth(conn * net.TCPConn) uint16{
+	header := make([]byte, 10)
+	conn.Read(header);
+	return binary.BigEndian.Uint16(header[8:]);
+
 }
 func  makeRequestPacket( count int32) *bytes.Buffer {
 	var  totalLen int16 = DEFAULT_REQ_COUNT_LENGTH + DEFAULT_REQ_LENGTH * int16(count);
