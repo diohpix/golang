@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"net"
+	"os"
 )
 
 var cnchandle = []byte{  0xa0, 0xa0,  0xa0,  0xa0, 0x00, 0x01, 0x01, 0x01, 0x00, 0x02, 0x00,0x02 };
@@ -26,6 +27,8 @@ func Connect(conn *net.TCPConn ){
 	conn.Read(tmp);
 }
 func SysInfo(conn * net.TCPConn){
+	//f, _ := os.Create("/tmp/dat2");
+
 	v :=makeRequestPacket(2);
 	makeRequest(v, key_systeminfo, 0);
 	makeRequest(v, key_systeminfo2, 0);
@@ -36,6 +39,8 @@ func SysInfo(conn * net.TCPConn){
 	readBodyLen := readBodyLenth(conn);
 	tmp := make([]byte, readBodyLen)     // using small tmo buffer for demonstrating
 	n,_:=conn.Read(tmp);
+	//f.Write(tmp);
+	//f.Close();
 	fmt.Println("read", n,tmp[:n])
 }
 func readBodyLenth(conn * net.TCPConn) uint16{
