@@ -13,11 +13,13 @@ import (
 
 
 func main() {
-	tcpAddr, err := net.ResolveTCPAddr("tcp4", "it.yhsbearing.com:8193")
+	tcpAddr, err := net.ResolveTCPAddr("tcp4", "127.0.0.1:8193")
 	checkError(err);
 	conn, err := net.DialTCP("tcp", nil, tcpAddr)
 	fanuc.Connect(conn);
-	fanuc.SysInfo(conn);
+	//fanuc.SysInfo(conn);
+	fanuc.Gcode(conn);
+
 }
 func checkError(err error) {
 	if err != nil {
